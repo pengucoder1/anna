@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration</title>
+    <style>
+        /* Common Styles */
+        body {
+            background-color: #FFD580;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #333;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+
+        .button {
+            background-color: #7B020B;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            align-self: flex-end;
+        }
+
+        .button:hover {
+            background-color: #8a0a13;
+        }
+
+        .image-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .image-container img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        /* Other styles remain the same */
+    </style>
+</head>
+<body>
+    <!-- Page 1: Image Display -->
+    <div id="page1">
+        <h1>What day is today?</h1>
+        <div class="image-container">
+            <img src="pengu1.WEBP" alt="pengu 1">
+            <img src="pengu2.WEBP" alt="pengu 2">
+        </div>
+        <div class="button-container">
+            <button class="button" onclick="goToPage2()">Next</button>
+        </div>
+    </div>
+
+    <!-- Page 2: Make a Wish -->
+    <div id="page2">
+        <h1>Make a Wish🎉 <br>How about blowing out the candle?</h1>
+        <div class="cake-container">
+            <div class="cake">
+                <div class="plate"></div>
+                <div class="layer layer-bottom"></div>
+                <div class="layer layer-middle"></div>
+                <div class="layer layer-top"></div>
+                <div class="icing"></div>
+                <div class="drip drip1"></div>
+                <div class="drip drip2"></div>
+                <div class="drip drip3"></div>
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+        <div class="message">Happy Birthday Anna❤️ Have an amazing day!</div>
+        <!-- Audio for Page 2 -->
+        <audio id="page2-audio" src="moltes-trim.mp3" loop></audio>
+    </div>
+
+    <script>
+        // Function to switch to Page 2
+        function goToPage2() {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+            // Play audio when Page 2 loads
+            const audio = document.getElementById('page2-audio');
+            audio.play();
+        }
+
+        // JavaScript to handle microphone input
+        const flame = document.querySelector('.flame');
+        const message = document.querySelector('.message');
+
+        async function setupMicrophone() {
+            try {
+                // Request microphone access
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                console.log('Microphone access granted');
+
+                // Set up audio context and analyzer
+                const audioContext = new AudioContext();
+                const analyzer = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyzer);
+
+                analyzer.fftSize = 256;
+                const bufferLength = analyzer.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                // Function to check volume
+                function checkVolume() {
+                    analyzer.getByteFrequencyData(dataArray);
+                    let sum = 0;
+                    for (let i = 0; i < bufferLength; i++) {
+                        sum += dataArray[i];
+                    }
+                    const averageVolume = sum / bufferLength;
+
+                    // If volume is above threshold, blow out the flame
+                    if (averageVolume > 85) {
+                        flame.style.display = 'none';
+                        message.style.display = 'block';
+                    }
+
+                    // Continue checking volume
+                    requestAnimationFrame(checkVolume);
+                }
+
+                // Start checking volume
+                checkVolume();
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                alert('Microphone access is required for this feature. Please allow access and refresh the page.');
+            }
+        }
+
+        // Call the function when the page loads
+        window.addEventListener('load', setupMicrophone);
+    </script>
+</body>
+</html>
