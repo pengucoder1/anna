@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Celebration</title>
+    <style>
+        /* Common Styles */
+        body {
+            background-color: #FFD580; /* Light orange background*/
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            color: #333; /* Darker text for better contrast */
+            text-align: center; /* Center all text */
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0; /* Adjusted margin */
+            line-height: 1.8; /* Increased gap between lines */
+        }
+
+        .button {
+            background-color: #7B020B;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .button:hover {
+            background-color: #8a0a13;
+        }
+
+        /* Page 1: Image Display */
+        .image-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-container img {
+            max-width: 300px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container {
+            width: 100%; /* Full width to align button to the right */
+            display: flex;
+            justify-content: center; /* Center the button */
+            margin-top: 20px; /* Space between text and button */
+        }
+
+        /* Page 2: Make a Wish */
+        .cake-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cake {
+            position: absolute;
+            width: 250px;
+            height: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .plate {
+            width: 270px;
+            height: 110px;
+            position: absolute;
+            bottom: -10px;
+            left: -10px;
+            background-color: #ccc;
+            border-radius: 50%;
+            box-shadow:
+                0 2px 0 #b3b3b3,
+                0 4px 0 #b3b3b3,
+                0 5px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .cake > * {
+            position: absolute;
+        }
+
+        .layer {
+            position: absolute;
+            display: block;
+            width: 250px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #553c13;
+            box-shadow:
+                0 2px 0 #5e4324,
+                0 4px 0 #4a3410,
+                0 6px 0 #49330f,
+                0 8px 0 #48320e,
+                0 10px 0 #47310d,
+                0 12px 0 #46300c,
+                0 14px 0 #452f0b,
+                0 16px 0 #442e0a,
+                0 18px 0 #432d09,
+                0 20px 0 #422c08,
+                0 22px 0 #412b07,
+                0 24px 0 #402a06,
+                0 26px 0 #3f2905,
+                0 28px 0 #3e2804,
+                0 30px 0 #3d2703;
+        }
+
+        .layer-top { top: 0px; }
+        .layer-middle { top: 33px; }
+        .layer-bottom { top: 66px; }
+
+        .icing {
+            top: 2px;
+            left: 5px;
+            background-color: #f0e4d0;
+            width: 240px;
+            height: 90px;
+            border-radius: 50%;
+        }
+
+        .icing:before {
+            content: "";
+            position: absolute;
+            top: 4px;
+            right: 5px;
+            bottom: 6px;
+            left: 5px;
+            background-color: #f3e8d6;
+            box-shadow:
+                0 0 4px #f5ecdc,
+                0 0 4px #f5ecdc,
+                0 0 4px #f5ecdc;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .drip {
+            display: block;
+            width: 50px;
+            height: 60px;
+            border-bottom-left-radius: 25px;
+            border-bottom-right-radius: 25px;
+            background-color: #f0e4d0;
+        }
+
+        .drip1 {
+            top: 53px;
+            left: 5px;
+            transform: skewY(15deg);
+            height: 48px;
+            width: 40px;
+        }
+
+        .drip2 {
+            top: 69px;
+            left: 181px;
+            transform: skewY(-15deg);
+        }
+
+        .drip3 {
+            top: 54px;
+            left: 90px;
+            width: 80px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+
+        .candle {
+            background-color: #7B020B;
+            width: 16px;
+            height: 50px;
+            border-radius: 8px / 4px;
+            top: -20px;
+            left: 50%;
+            margin-left: -8px;
+            z-index: 10;
+        }
+
+        .candle:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 16px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #8a0a13;
+        }
+
+        .flame {
+            position: absolute;
+            background-color: orange;
+            width: 15px;
+            height: 35px;
+            border-radius: 10px 10px 10px 10px / 25px 25px 10px 10px;
+            top: -34px;
+            left: 50%;
+            margin-left: -7.5px;
+            z-index: 10;
+            box-shadow:
+                0 0 10px rgba(255, 165, 0, 0.5),
+                0 0 20px rgba(255, 165, 0, 0.5),
+                0 0 60px rgba(255, 165, 0, 0.5),
+                0 0 80px rgba(255, 165, 0, 0.5);
+            transform-origin: 50% 90%;
+            animation: flicker 1s ease-in-out alternate infinite;
+        }
+
+        @keyframes flicker {
+            0% {
+                transform: skewX(5deg);
+                box-shadow: 
+                    0 0 10px rgba(255, 165, 0, 0.2),
+                    0 0 20px rgba(255, 165, 0, 0.2),
+                    0 0 60px rgba(255, 165, 0, 0.2),
+                    0 0 80px rgba(255, 165, 0, 0.2); }
+            25% {
+                transform: skewX(-5deg);
+                box-shadow:
+                    0 0 10px rgba(255, 165, 0, 0.5),
+                    0 0 20px rgba(255, 165, 0, 0.5),
+                    0 0 60px rgba(255, 165, 0, 0.5),
+                    0 0 80px rgba(255, 165, 0, 0.5); }
+            50% {
+                transform: skewX(10deg);
+                box-shadow:
+                    0 0 10px rgba(255, 165, 0, 0.3),
+                    0 0 20px rgba(255, 165, 0, 0.3),
+                    0 0 60px rgba(255, 165, 0, 0.3),
+                    0 0 80px rgba(255, 165, 0, 0.3); }
+            75% {
+                transform: skewX(-10deg);
+                box-shadow:
+                    0 0 10px rgba(255, 165, 0, 0.4),
+                    0 0 20px rgba(255, 165, 0, 0.4),
+                    0 0 60px rgba(255, 165, 0, 0.4),
+                    0 0 80px rgba(255, 165, 0, 0.4); }
+            100% {
+                transform: skewX(5deg);
+                box-shadow:
+                    0 0 10px rgba(255, 165, 0, 0.5),
+                    0 0 20px rgba(255, 165, 0, 0.5),
+                    0 0 60px rgba(255, 165, 0, 0.5),
+                    0 0 80px rgba(255, 165, 0, 0.5); }
+        }
+
+        .message {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #7B020B; /* Dark red for better contrast */
+        }
+
+        /* Hide Page 2 Initially */
+        #page2 {
+            display: none;
+        }
+
+        /* Audio styling */
+        audio {
+            display: none; /* Hide the audio element */
+        }
+    </style>
+</head>
+<body>
+    <!-- Page 1: Image Display -->
+    <div id="page1">
+        <div class="image-container">
+            <img src="pengu1.WEBP" alt="pengu 1">
+            <img src="pengu2.WEBP" alt="pengu 2">
+        </div>
+        <h1>... from your clumsy business goose</h1>
+        <div class="button-container">
+            <button class="button" onclick="goToPage2()">Next</button>
+        </div>
+    </div>
+
+    <!-- Page 2: Make a Wish -->
+    <div id="page2">
+        <h1>Make a Wish🎉 <br>How about blowing out the candle?</h1>
+        <div class="cake-container">
+            <div class="cake">
+                <div class="plate"></div>
+                <div class="layer layer-bottom"></div>
+                <div class="layer layer-middle"></div>
+                <div class="layer layer-top"></div>
+                <div class="icing"></div>
+                <div class="drip drip1"></div>
+                <div class="drip drip2"></div>
+                <div class="drip drip3"></div>
+                <div class="candle">
+                    <div class="flame"></div>
+                </div>
+            </div>
+        </div>
+        <div class="message">Happy Birthday Anna💕 Hope you have an amazing day!</div>
+        <!-- Audio for Page 2 -->
+        <audio id="page2-audio" src="moltes-trim.mp3" loop></audio>
+    </div>
+
+    <script>
+        // Function to switch to Page 2
+        function goToPage2() {
+            document.getElementById('page1').style.display = 'none';
+            document.getElementById('page2').style.display = 'block';
+            // Play audio when Page 2 loads
+            const audio = document.getElementById('page2-audio');
+            audio.play();
+        }
+
+        // JavaScript to handle microphone input
+        const flame = document.querySelector('.flame');
+        const message = document.querySelector('.message');
+
+        async function setupMicrophone() {
+            try {
+                // Request microphone access
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                console.log('Microphone access granted');
+
+                // Set up audio context and analyzer
+                const audioContext = new AudioContext();
+                const analyzer = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyzer);
+
+                analyzer.fftSize = 256;
+                const bufferLength = analyzer.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                // Function to check volume
+                function checkVolume() {
+                    analyzer.getByteFrequencyData(dataArray);
+                    let sum = 0;
+                    for (let i = 0; i < bufferLength; i++) {
+                        sum += dataArray[i];
+                    }
+                    const averageVolume = sum / bufferLength;
+
+                    // If volume is above threshold, blow out the flame
+                    if (averageVolume > 100) {
+                        flame.style.display = 'none';
+                        message.style.display = 'block';
+                    }
+
+                    // Continue checking volume
+                    requestAnimationFrame(checkVolume);
+                }
+
+                // Start checking volume
+                checkVolume();
+            } catch (error) {
+                console.error('Error accessing microphone:', error);
+                alert('Microphone access is required for this feature. Please allow access and refresh the page.');
+            }
+        }
+
+        // Call the function when the page loads
+        window.addEventListener('load', setupMicrophone);
+    </script>
+</body>
+</html>
